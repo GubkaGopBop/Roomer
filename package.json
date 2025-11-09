@@ -1,9 +1,11 @@
 {
   "name": "roomer",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Система веб-авторизации для игры",
+  "main": "main/index.js",
   "scripts": {
+    "start": "node main/index.js",
+    "dev": "nodemon main/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
