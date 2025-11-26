@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация - Roomer</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <span class="logo-text">Roomer</span>
+      </div>
+      <div class="menu-icon">{ }</div>
+    </div>
+
+    <h1>Регистрация</h1>
+
+    <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+    <form id="registerForm">
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="email" 
+          class="input-field" 
+          placeholder="Email" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          class="input-field" 
+          placeholder="Пароль" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          class="input-field" 
+          placeholder="Повторите пароль" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary">Создать аккаунт</button>
+    </form>
+
+    <div class="link-text">
+      Уже есть аккаунт? <a href="/login.html">Войти</a>
+    </div>
+  </div>
+
+  <script src="/js/register.js"></script>
+</body>
+</html>

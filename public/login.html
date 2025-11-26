@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Авторизация - Roomer</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <span class="logo-text">Roomer</span>
+      </div>
+      <div class="menu-icon">{ }</div>
+    </div>
+
+    <h1>Авторизация</h1>
+
+    <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="email" 
+          class="input-field" 
+          placeholder="Email" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          class="input-field" 
+          placeholder="Пароль" 
+          required
+        >
+      </div>
+
+      <div id="twofaField" class="form-group" style="display: none;">
+        <input 
+          type="text" 
+          id="twofa_code" 
+          class="input-field twofa-input" 
+          placeholder="Код 2FA"
+          maxlength="6"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+
+    <div class="link-text">
+      <a href="/recovery.html">Забыли пароль?</a>
+    </div>
+
+    <button class="btn btn-secondary" onclick="location.href='/register.html'">
+      Регистрация
+    </button>
+  </div>
+
+  <script src="/js/login.js"></script>
+</body>
+</html>

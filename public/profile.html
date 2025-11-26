@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Личный кабинет - Roomer</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <span class="logo-text">Roomer</span>
+      </div>
+      <div class="home-icon" onclick="logout()">⬆</div>
+    </div>
+
+    <h1>Личный кабинет</h1>
+
+    <div id="loading" class="loading">Загрузка...</div>
+
+    <div id="profileContent" style="display: none;">
+      <div class="profile-header">
+        <div class="avatar" id="avatar"></div>
+        <div class="profile-info">
+          <div class="nickname" id="nickname">Никнейм</div>
+          <div class="level" id="level">Уровень</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Время в игре</div>
+          <div class="stat-value" id="playtime">0 ч</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Рейтинг</div>
+          <div class="stat-value" id="rating">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Победы</div>
+          <div class="stat-value" id="wins">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Уровень</div>
+          <div class="stat-value" id="levelValue">1</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Достижения</div>
+        <div id="achievementsList"></div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="location.href='#purchases'">
+        Список покупок
+      </button>
+
+      <div id="purchasesSection" class="section" style="display: none;">
+        <div class="section-title">История покупок</div>
+        <div id="purchasesList"></div>
+      </div>
+
+      <div style="margin-top: 30px;">
+        <button class="btn btn-secondary" onclick="showEditProfile()">
+          Редактировать профиль
+        </button>
+        <button class="btn btn-secondary" onclick="show2FASetup()">
+          Включить 2FA
+        </button>
+      </div>
+    </div>
+
+    <div id="editProfileModal" style="display: none;">
+      <h2>Редактировать профиль</h2>
+      <div id="editError" class="error-message" style="display: none;"></div>
+      <form id="editProfileForm">
+        <div class="form-group">
+          <input 
+            type="text" 
+            id="newNickname" 
+            class="input-field" 
+            placeholder="Новый никнейм"
+          >
+        </div>
+        <div class="form-group">
+          <input 
+            type="email" 
+            id="newEmail" 
+            class="input-field" 
+            placeholder="Новый email"
+          >
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="button" class="btn btn-secondary" onclick="hideEditProfile()">Отмена</button>
+      </form>
+    </div>
+
+    <div id="twofaModal" style="display: none;">
+      <h2>Включить 2FA</h2>
+      <div id="twofaError" class="error-message" style="display: none;"></div>
+      <div class="qr-code" id="qrCodeContainer" style="display: none;">
+        <p>Отсканируйте QR-код в приложении аутентификатора:</p>
+        <img id="qrCodeImage" src="" alt="QR Code">
+      </div>
+      <form id="enable2FAForm">
+        <div class="form-group">
+          <input 
+            type="text" 
+            id="twofa_code_setup" 
+            class="input-field twofa-input" 
+            placeholder="Введите код"
+            maxlength="6"
+          >
+        </div>
+        <button type="submit" class="btn btn-primary">Включить 2FA</button>
+        <button type="button" class="btn btn-secondary" onclick="hide2FASetup()">Отмена</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/profile.js"></script>
+</body>
+</html>
