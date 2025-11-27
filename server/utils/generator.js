@@ -112,27 +112,38 @@ function calculatePrice(rarity) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function generateRandomDateTime(daysAgo) {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  
+  const hours = Math.floor(Math.random() * 24);
+  const minutes = Math.floor(Math.random() * 60);
+  
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setSeconds(0);
+  
+  return date.toISOString();
+}
+
 function generatePurchase(userId) {
   const rarity = getRandomRarity();
   const itemName = generateItemName();
   const price = calculatePrice(rarity.type);
   
   const daysAgo = Math.floor(Math.random() * 90);
-  const purchaseDate = new Date();
-  purchaseDate.setDate(purchaseDate.getDate() - daysAgo);
+  const purchaseDate = generateRandomDateTime(daysAgo);
   
   return {
     user_id: userId,
-    item_name: `${itemName} (${rarity.name})`,
+    item_name: itemName,
     amount: price,
     rarity: rarity.type,
-    purchase_date: purchaseDate.toISOString()
+    purchase_date: purchaseDate
   };
 }
 
-// ✅ ИСПРАВЛЕНО: Достижения теперь выдаются только если выполнены требования
 function generateAchievement(userId, userStats) {
-  // Фильтруем достижения, которые игрок может получить
   const availableAchievements = achievementTemplates.filter(template => {
     if (template.level && userStats.level < template.level) return false;
     if (template.wins && userStats.wins < template.wins) return false;
@@ -142,7 +153,6 @@ function generateAchievement(userId, userStats) {
   });
 
   if (availableAchievements.length === 0) {
-    // Если нет доступных достижений, даем самое простое
     const template = achievementTemplates[0];
     return createAchievementFromTemplate(userId, template);
   }
@@ -155,20 +165,18 @@ function createAchievementFromTemplate(userId, template) {
   const rarity = determineRarityByPercentage(template.percentage);
   
   const daysAgo = Math.floor(Math.random() * 180);
-  const earnedDate = new Date();
-  earnedDate.setDate(earnedDate.getDate() - daysAgo);
+  const earnedDate = generateRandomDateTime(daysAgo);
   
   return {
     user_id: userId,
     title: template.name,
-    description: `${template.desc} (${rarities[rarity].name})`,
+    description: template.desc,
     rarity: rarity,
     percentage: template.percentage.toFixed(1),
-    earned_at: earnedDate.toISOString()
+    earned_at: earnedDate
   };
 }
 
-// Определяем редкость по проценту игроков
 function determineRarityByPercentage(percentage) {
   if (percentage < 1) return 'legendary';
   if (percentage < 5) return 'epic';
@@ -201,13 +209,29 @@ function generateUserStats() {
 
 function generateMultiplePurchases(userId, count) {
   const purchases = [];
-  for (let i = 0; i < count; i++) {
-    purchases.push(generatePurchase(userId));
+  const usedItems = new Map();
+  
+  let attempts = 0;
+  const maxAttempts = count * 3;
+  
+  while (purchases.length < count && attempts < maxAttempts) {
+    attempts++;
+    const purchase = generatePurchase(userId);
+    
+    const existingRarities = usedItems.get(purchase.item_name) || [];
+    
+    if (!existingRarities.includes(purchase.rarity)) {
+      existingRarities.push(purchase.rarity);
+      usedItems.set(purchase.item_name, existingRarities);
+      purchases.push(purchase);
+    }
   }
+  
+  purchases.sort((a, b) => new Date(b.purchase_date) - new Date(a.purchase_date));
+  
   return purchases;
 }
 
-// ✅ ИСПРАВЛЕНО: Достижения генерируются с учетом статистики
 function generateMultipleAchievements(userId, count, userStats) {
   const achievements = [];
   const usedTemplates = new Set();
@@ -225,6 +249,8 @@ function generateMultipleAchievements(userId, count, userStats) {
       achievements.push(achievement);
     }
   }
+  
+  achievements.sort((a, b) => parseFloat(a.percentage) - parseFloat(b.percentage));
   
   return achievements;
 }

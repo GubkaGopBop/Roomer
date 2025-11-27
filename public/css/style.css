@@ -348,3 +348,70 @@ h1 {
   font-size: 24px;
   letter-spacing: 10px;
 }
+
+/* Выпадающий список покупок */
+.purchases-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+  opacity: 0;
+  margin-top: 0;
+  background-color: white;
+}
+
+.purchases-dropdown.show {
+  max-height: 3000px;
+  opacity: 1;
+  margin-top: 20px;
+}
+
+#purchasesButton {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#purchasesButton:hover {
+  transform: scale(1.02);
+}
+
+#purchasesButton.active {
+  background-color: #333;
+  color: white;
+}
+
+.purchases-dropdown .section-title {
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.purchase-item {
+  animation: fadeIn 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.purchase-item:nth-child(1) { animation-delay: 0.05s; }
+.purchase-item:nth-child(2) { animation-delay: 0.1s; }
+.purchase-item:nth-child(3) { animation-delay: 0.15s; }
+.purchase-item:nth-child(4) { animation-delay: 0.2s; }
+.purchase-item:nth-child(5) { animation-delay: 0.25s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

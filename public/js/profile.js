@@ -96,7 +96,7 @@ async function loadPurchases() {
     const container = document.getElementById('purchasesList');
 
     if (purchases.length === 0) {
-      container.innerHTML = '<div class="purchase-item">Нет покупок</div>';
+      container.innerHTML = '<div class="purchase-item">Пока нет покупок</div>';
       return;
     }
 
@@ -108,19 +108,24 @@ async function loadPurchases() {
       legendary: 'Легендарная'
     };
 
-    container.innerHTML = purchases.map(purchase => `
-      <div class="purchase-item ${purchase.rarity || 'common'}">
+    container.innerHTML = purchases.map((purchase, index) => `
+      <div class="purchase-item ${purchase.rarity || 'common'}" style="animation-delay: ${index * 0.05}s">
         <div class="purchase-name">
           ${purchase.item_name}
         </div>
-        <div>Сумма: <strong>${purchase.amount} руб.</strong></div>
-        <div class="purchase-date">${new Date(purchase.purchase_date).toLocaleDateString('ru-RU', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })}</div>
+        <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 18px; font-weight: bold; color: #10B981;">${purchase.amount} руб.</span>
+          <span class="rarity-badge ${purchase.rarity || 'common'}">${rarityNames[purchase.rarity] || 'Обычная'}</span>
+        </div>
+        <div class="purchase-date" style="margin-top: 5px;">
+          ${new Date(purchase.purchase_date).toLocaleDateString('ru-RU', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </div>
       </div>
     `).join('');
   } catch (error) {
@@ -251,15 +256,29 @@ function logout() {
 }
 
 function togglePurchases() {
-  const section = document.getElementById('purchasesSection');
-  const isVisible = section.style.display !== 'none';
+  console.log('togglePurchases вызвана');
   
-  if (isVisible) {
-    section.style.display = 'none';
+  const section = document.getElementById('purchasesSection');
+  const button = document.getElementById('purchasesButton');
+  
+  console.log('section:', section);
+  console.log('button:', button);
+  console.log('section.classList:', section.classList);
+  
+  if (section.classList.contains('show')) {
+    console.log('Закрываем список');
+    section.classList.remove('show');
+    button.classList.remove('active');
+    button.textContent = 'Список покупок';
   } else {
-    section.style.display = 'block';
-    // Прокрутка к разделу
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    console.log('Открываем список');
+    section.classList.add('show');
+    button.classList.add('active');
+    button.textContent = 'Скрыть покупки';
+    
+    setTimeout(() => {
+      section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
   }
 }
 
