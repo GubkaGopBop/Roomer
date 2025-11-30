@@ -1,3 +1,19 @@
+function validatePassword(password) {
+  if (password.length < 8) {
+    return 'Пароль должен содержать минимум 8 символов';
+  }
+  if (!/[A-Z]/.test(password)) {
+    return 'Пароль должен содержать заглавные буквы (A-Z)';
+  }
+  if (!/[a-z]/.test(password)) {
+    return 'Пароль должен содержать строчные буквы (a-z)';
+  }
+  if (!/[0-9]/.test(password)) {
+    return 'Пароль должен содержать цифры (0-9)';
+  }
+  return null;
+}
+
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -8,14 +24,15 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
 
   errorDiv.style.display = 'none';
 
-  if (password !== confirmPassword) {
-    errorDiv.textContent = 'Пароли не совпадают';
+  const passwordError = validatePassword(password);
+  if (passwordError) {
+    errorDiv.textContent = passwordError;
     errorDiv.style.display = 'block';
     return;
   }
 
-  if (password.length < 6) {
-    errorDiv.textContent = 'Пароль должен содержать минимум 6 символов';
+  if (password !== confirmPassword) {
+    errorDiv.textContent = 'Пароли не совпадают';
     errorDiv.style.display = 'block';
     return;
   }

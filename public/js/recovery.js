@@ -57,8 +57,26 @@ document.getElementById('passwordResetForm')?.addEventListener('submit', async (
     return;
   }
 
-  if (newPassword.length < 6) {
-    errorDiv.textContent = 'Пароль должен содержать минимум 6 символов';
+  if (newPassword.length < 8) {
+    errorDiv.textContent = 'Пароль должен содержать минимум 8 символов';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  if (!/[A-Z]/.test(newPassword)) {
+    errorDiv.textContent = 'Пароль должен содержать заглавные буквы';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  if (!/[a-z]/.test(newPassword)) {
+    errorDiv.textContent = 'Пароль должен содержать строчные буквы';
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  if (!/[0-9]/.test(newPassword)) {
+    errorDiv.textContent = 'Пароль должен содержать цифры';
     errorDiv.style.display = 'block';
     return;
   }

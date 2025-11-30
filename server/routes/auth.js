@@ -26,8 +26,20 @@ router.post('/register', (req, res) => {
     return res.status(400).json({ error: 'Заполните все поля' });
   }
 
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Пароль должен содержать минимум 6 символов' });
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Пароль должен содержать минимум 8 символов' });
+  }
+
+  if (!/[A-Z]/.test(password)) {
+    return res.status(400).json({ error: 'Пароль должен содержать заглавные буквы' });
+  }
+
+  if (!/[a-z]/.test(password)) {
+    return res.status(400).json({ error: 'Пароль должен содержать строчные буквы' });
+  }
+
+  if (!/[0-9]/.test(password)) {
+    return res.status(400).json({ error: 'Пароль должен содержать цифры' });
   }
 
   User.create(email, password, (err, user) => {
@@ -38,12 +50,9 @@ router.post('/register', (req, res) => {
       return res.status(500).json({ error: 'Ошибка создания аккаунта' });
     }
 
-    // Генерация случайной статистики
     const stats = generator.generateUserStats();
     
-    // Используем Promise для синхронного выполнения
     Promise.all([
-      // Обновляем статистику
       new Promise((resolve, reject) => {
         db.run(
           'UPDATE users SET level = ?, rating = ?, playtime = ?, wins = ? WHERE id = ?',
@@ -52,7 +61,6 @@ router.post('/register', (req, res) => {
         );
       }),
       
-      // Генерируем достижения
       ...(() => {
         const achievementCount = Math.floor(Math.random() * 6) + 3;
         const achievements = generator.generateMultipleAchievements(user.id, achievementCount, stats);
@@ -68,7 +76,6 @@ router.post('/register', (req, res) => {
         );
       })(),
       
-      // Генерируем покупки
       ...(() => {
         const purchaseCount = Math.floor(Math.random() * 9) + 2;
         const purchases = generator.generateMultiplePurchases(user.id, purchaseCount);
@@ -191,8 +198,20 @@ router.post('/recovery/reset', (req, res) => {
     return res.status(400).json({ error: 'Заполните все поля' });
   }
 
-  if (newPassword.length < 6) {
-    return res.status(400).json({ error: 'Пароль должен содержать минимум 6 символов' });
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'Пароль должен содержать минимум 8 символов' });
+  }
+
+  if (!/[A-Z]/.test(newPassword)) {
+    return res.status(400).json({ error: 'Пароль должен содержать заглавные буквы' });
+  }
+
+  if (!/[a-z]/.test(newPassword)) {
+    return res.status(400).json({ error: 'Пароль должен содержать строчные буквы' });
+  }
+
+  if (!/[0-9]/.test(newPassword)) {
+    return res.status(400).json({ error: 'Пароль должен содержать цифры' });
   }
 
   const sql = `
